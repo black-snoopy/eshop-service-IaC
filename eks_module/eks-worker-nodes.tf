@@ -38,6 +38,11 @@ resource "aws_iam_role_policy_attachment" "terra-node-AmazonEC2ContainerRegistry
   role       = aws_iam_role.terra-node.name
 }
 
+resource "aws_iam_role_policy_attachment" "terra-node-CloudWatchAgentServerPolicy" {
+  policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
+  role       = aws_iam_role.terra-node.name
+}
+
 resource "aws_eks_node_group" "terra" {
   cluster_name    = aws_eks_cluster.terra.name
   node_group_name = "eshop-service-${var.cluster_node_name}"
@@ -54,6 +59,7 @@ resource "aws_eks_node_group" "terra" {
   depends_on = [
     aws_iam_role_policy_attachment.terra-node-AmazonEKSWorkerNodePolicy,
     aws_iam_role_policy_attachment.terra-node-AmazonEKS_CNI_Policy,
-    aws_iam_role_policy_attachment.terra-node-AmazonEC2ContainerRegistryReadOnly
+    aws_iam_role_policy_attachment.terra-node-AmazonEC2ContainerRegistryReadOnly,
+    aws_iam_role_policy_attachment.terra-node-CloudWatchAgentServerPolicy
   ]
 }
